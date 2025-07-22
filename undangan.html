@@ -4,231 +4,435 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Undangan Paul & Ita</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans&display=swap" rel="stylesheet"/>
- <style>
-  body {
-    margin: 0;
-    font-family: 'Open Sans', sans-serif;
-    background-color: #fff8f2;
-    color: #444;
-  }
-  header {
-    background: url('https://images.unsplash.com/photo-1526045612212-70caf35c14df') center/cover no-repeat;
-    height: 100vh;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
-    text-align: center;
-  }
-  header h1 {
-    font-family: 'Great Vibes', cursive;
-    font-size: 60px;
-    margin: 0;
-  }
-  header p {
-    font-size: 20px;
-  }
-  .section {
-    padding: 50px 20px;
-    text-align: center;
-  }
-  .nama-tamu {
-    font-size: 20px;
-    margin-top: 20px;
-    font-style: italic;
-    color: #555;
-  }
-  .countdown {
-    font-size: 24px;
-    margin-top: 20px;
-    color: #a64ac9;
-  }
-  .maps iframe {
-    width: 100%;
-    height: 300px;
-    border: none;
-    border-radius: 8px;
-  }
-  .gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    padding: 20px;
-  }
-  .gallery img {
-    width: 100%;
-    max-width: 250px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  .form-group {
-    margin-bottom: 15px;
-  }
-  form input, form select {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    margin-top: 5px;
-  }
-  button {
-    padding: 10px 20px;
-    background-color: #a64ac9;
-    color: white;
-    border: none;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .footer {
-    padding: 20px;
-    background-color: #fce9e6;
-    text-align: center;
-    font-size: 14px;
-    color: #777;
-  }
-  @media (max-width: 600px) {
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <style>
+    :root {
+      --primary-color: #a64ac9;
+      --bg-overlay: rgba(0, 0, 0, 0.4);
+      --section-bg: rgba(255, 255, 255, 0.2);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; transition: background-color 0.8s ease; }
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      background-color: transparent;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    .video-background {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      z-index: -2;
+    }
+    .video-background video {
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+    }
+    header {
+      height: 100vh;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+      text-align: center;
+      padding-top: 60px;
+    }
     header h1 {
-      font-size: 40px;
+      font-family: 'Great Vibes', cursive;
+      font-size: 64px; margin: 0;
+    }
+    header p {
+      font-size: 22px;
+      font-family: 'Playfair Display', serif;
+    }
+    .nama-tamu {
+      font-size: 20px;
+      margin-top: 20px;
+      font-style: italic;
+      color: #eee;
+    }
+
+    /* Navbar Dropdown */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      z-index: 1000;
+    }
+    .navbar .brand {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      font-family: 'Playfair Display', serif;
+    }
+    .navbar .menu {
+      display: flex;
+      gap: 20px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .navbar a:hover {
+      color: var(--primary-color);
+    }
+    .navbar .toggle {
+      display: none;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+    .navbar .menu.mobile {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: rgba(0,0,0,0.9);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .navbar .menu.mobile a {
+      margin: 10px 0;
+    }
+
+    @media (max-width: 768px) {
+      .navbar .menu.desktop {
+        display: none;
+      }
+      .navbar .toggle {
+        display: block;
+      }
+    }
+
+    .section {
+      padding: 80px 20px;
+      text-align: center;
+      background-color: var(--section-bg);
+      backdrop-filter: blur(8px);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+      border-radius: 12px;
+    }
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: #fff;
+    }
+    .countdown {
+      font-size: 26px;
+      margin-top: 20px;
+      color: #fff;
+      font-weight: bold;
+    }
+    .maps iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 8px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
     }
     .gallery img {
-      max-width: 100%;
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+      transition: transform 0.3s;
     }
-  }
-</style>
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+      max-width: 400px;
+      margin-inline: auto;
+    }
+    form input, form select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .music-toggle {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      z-index: 999;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .music-toggle.hidden {
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
+    }
+    #musicBtn {
+      padding: 10px;
+      border: none;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      cursor: pointer;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .footer {
+      padding: 30px;
+      background-color: rgba(0,0,0,0.4);
+      text-align: center;
+      font-size: 14px;
+      color: #fff;
+    }
+    .mySwiper {
+      width: 100%;
+      max-width: 700px;
+      margin: auto;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .swiper-slide img {
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+  </style>
 </head>
 <body>
+<div id="opening" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; color: white; font-family: 'Playfair Display', serif; text-align: center;">
+  <h1 style="font-family: 'Great Vibes', cursive; font-size: 48px;">Paul & Ita</h1>
+  <p style="font-size: 20px;" id="pembuka-nama">Yth. Tamu Undangan</p>
+  <button onclick="bukaUndangan()" style="margin-top: 30px; font-size: 18px;">Buka Undangan</button>
+</div>
 
-  <header>
-    <h1>Paul & Ita</h1>
-    <p>Undangan Pernikahan</p>
-    <p class="nama-tamu" id="tamu"></p>
-  </header>
+<div class="video-background">
+  <video autoplay muted loop playsinline>
+    <source src="large.mp4" type="video/mp4">
+  </video>
+</div>
 
-  <section class="section">
-    <h2>Dengan hormat,</h2>
-    <p>kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami:</p>
-    <h3>Yoga Adi Wijaya</h3>
-    <p>Putra dari Bapak Ahmad & Ibu Siti</p>
-    <h3>Putri Anindya Larasati</h3>
-    <p>Putri dari Bapak Budi & Ibu Lestari</p>
-  </section>
+<audio id="music" loop autoplay>
+  <source src="musik.mp4" type="audio/mp4">
+</audio>
 
-  <section class="section" style="background-color: #fff1f1;">
-    <h2>Hitung Mundur</h2>
-    <div class="countdown" id="countdown">Memuat...</div>
-  </section>
-
-  <section class="section">
-    <h2>Waktu & Tempat</h2>
-    <p><strong>Tanggal:</strong> Minggu, 20 Juli 2025</p>
-    <p><strong>Waktu:</strong> 10:00 - 13:00 WIB</p>
-    <p><strong>Tempat:</strong> Gedung Serbaguna Cempaka, Jakarta</p>
-  </section>
-
-  <section class="section maps" style="background-color:#f9f5f2;">
-    <h2>Lokasi</h2>
-    <iframe src="https://maps.app.goo.gl/chRYSL1g8TyfSTLn7" allowfullscreen="" loading="lazy"></iframe>
-  </section>
-
-  <section class="section">
-    <h2>Galeri Kenangan</h2>
-    <div class="gallery">
-      <img src="https://source.unsplash.com/300x400/?wedding,couple" alt="Galeri 1">
-      <img src="https://source.unsplash.com/300x400/?bride,groom" alt="Galeri 2">
-      <img src="https://source.unsplash.com/300x400/?love,wedding" alt="Galeri 3">
-    </div>
-  </section>
-
-  <section class="section" style="background-color:#fff1f1;">
-    <h2>Konfirmasi Kehadiran (RSVP)</h2>
-    <form id="rsvpForm">
-      <div class="form-group">
-        <label>Nama:</label>
-        <input type="text" name="nama" required />
-      </div>
-      <div class="form-group">
-        <label>Jumlah Tamu:</label>
-        <input type="number" name="jumlah" min="1" max="10" required />
-      </div>
-      <div class="form-group">
-        <label>Apakah Anda akan hadir?</label>
-        <select name="kehadiran" required>
-          <option value="">--Pilih--</option>
-          <option value="ya">Ya, saya akan hadir</option>
-          <option value="tidak">Maaf, saya tidak bisa hadir</option>
-        </select>
-      </div>
-      <button type="submit">Kirim</button>
-    </form>
-  </section>
-
-  <div class="footer">
-    ©️ 2025 Yoga & Putri Wedding — Terima kasih atas doa & kehadirannya
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="brand">Paul & Ita</div>
+  <div class="menu desktop">
+    <a href="#lokasi">Lokasi</a>
+    <a href="#galeri">Galeri</a>
+    <a href="#rsvp">RSVP</a>
   </div>
+  <div class="toggle" onclick="toggleDropdown()">☰</div>
+  <div class="menu mobile" id="mobileMenu">
+    <a href="#lokasi" onclick="toggleDropdown()">Lokasi</a>
+    <a href="#galeri" onclick="toggleDropdown()">Galeri</a>
+    <a href="#rsvp" onclick="toggleDropdown()">RSVP</a>
+  </div>
+</nav>
 
-  <script>
-    // Nama tamu dari URL
-    const params = new URLSearchParams(window.location.search);
-    const tamu = params.get("tamu");
-    const tamuEl = document.getElementById("tamu");
-    if (tamu) {
-      tamuEl.innerText = "Yth. " + decodeURIComponent(tamu);
+<header>
+  <h1>Paul & Ita</h1>
+  <p>Undangan Pernikahan</p>
+  <p class="nama-tamu" id="tamu"></p>
+  <div class="music-toggle" id="musicToggle">
+    <button onclick="toggleMusic()" id="musicBtn">🔊</button>
+  </div>
+</header>
+
+<section class="section">
+  <h2>Dengan hormat,</h2>
+  <p>kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami:</p>
+  <h3>Paul Bramadi</h3><p>Putra dari Bapak ... & Ibu ...</p>
+  <h3>Ita Rahmawati</h3><p>Putri dari Bapak ... & Ibu ...</p>
+</section>
+
+<section class="section">
+  <h2>Hitung Mundur</h2>
+  <div class="countdown" id="countdown">Memuat...</div>
+</section>
+
+<section class="section" id="lokasi">
+  <h2>Waktu & Tempat</h2>
+  <p><strong>Tanggal:</strong> Minggu, 20 Juli 2025</p>
+  <p><strong>Waktu:</strong> 10:00 - 13:00 WIB</p>
+  <p><strong>Tempat:</strong> Gedung Serbaguna Cempaka, Jakarta</p>
+</section>
+
+<section class="section maps">
+  <h2>Lokasi</h2>
+  <iframe src="https://www.google.com/maps/embed?..."></iframe>
+</section>
+
+<section class="section" id="galeri">
+  <h2>Galeri Kenangan</h2>
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="1.jpeg" /></div>
+      <div class="swiper-slide"><img src="2.jpeg" /></div>
+      <div class="swiper-slide"><img src="3.jpeg" /></div>
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+  </div>
+</section>
+
+<section class="section" id="rsvp">
+  <h2>Konfirmasi Kehadiran (RSVP)</h2>
+  <form id="rsvpForm">
+    <div class="form-group"><label>Nama:</label><input type="text" name="nama" required /></div>
+    <div class="form-group"><label>Jumlah Tamu:</label><input type="number" name="jumlah" min="1" max="10" required /></div>
+    <div class="form-group"><label>Kehadiran:</label>
+      <select name="kehadiran" required>
+        <option value="">--Pilih--</option>
+        <option value="ya">Ya</option>
+        <option value="tidak">Tidak</option>
+      </select>
+    </div>
+    <button type="submit">Kirim</button>
+  </form>
+</section>
+
+<div class="footer">©️ 2025 Paul & Ita Wedding — Terima kasih atas doa & kehadirannya</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  // Toggle Dropdown
+  function toggleDropdown() {
+    const menu = document.getElementById("mobileMenu");
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const namaTamu = params.get("to");
+  const max = params.get("max");
+  if (namaTamu) {
+    document.getElementById("tamu").innerText = "Yth. " + decodeURIComponent(namaTamu);
+    document.getElementById("pembuka-nama").innerText = "Yth. " + decodeURIComponent(namaTamu);
+  }
+  if (max) document.querySelector('input[name="jumlah"]').setAttribute("max", max);
+
+  const music = document.getElementById("music");
+  let isPlaying = true;
+  const musicBtn = document.getElementById("musicBtn");
+  function toggleMusic() {
+    if (isPlaying) {
+      music.pause(); musicBtn.textContent = "🔈";
     } else {
-      tamuEl.innerText = "Yth. Tamu Undangan";
+      music.play(); musicBtn.textContent = "🔊";
     }
+    isPlaying = !isPlaying;
+  }
 
-    // Countdown
-    const targetDate = new Date("2025-07-20T10:00:00").getTime();
-    const countdownEl = document.getElementById("countdown");
+  const targetDate = new Date("2025-07-20T10:00:00").getTime();
+  const countdownEl = document.getElementById("countdown");
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+    if (distance < 0) return countdownEl.innerText = "Acara sedang berlangsung!";
+    const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((distance % (1000 * 60)) / 1000);
+    countdownEl.innerText = `${d} hari ${h} jam ${m} menit ${s} detik`;
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
 
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
-      if (distance < 0) {
-        countdownEl.innerText = "Acara sedang berlangsung!";
-        return;
+  function bukaUndangan() {
+    const opening = document.getElementById("opening");
+    opening.style.opacity = "0";
+    setTimeout(() => {
+      opening.style.display = "none";
+      document.body.style.overflow = "auto";
+      music.play();
+    }, 1000);
+  }
+  document.body.style.overflow = "hidden";
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
       }
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      countdownEl.innerText = `${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
-    }
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.section').forEach(section => observer.observe(section));
+
   document.getElementById("rsvpForm").addEventListener("submit", function(e) {
     e.preventDefault();
-    
     const form = e.target;
     const data = {
       nama: form.nama.value,
       jumlah: form.jumlah.value,
       kehadiran: form.kehadiran.value
     };
-
-    fetch("https://script.google.com/macros/s/AKfycbz2SoKxUU1nYpBAvX-nxeO_Wga-DcqyvEy2xOvXYQwelJTzTBDzs7_1CzrV3US-uDHW/exec", {
+    fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
       method: "POST",
       body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: {"Content-Type": "application/json"}
     }).then(res => res.json())
-      .then(res => {
-        if (res.status === "sukses") {
-          alert("Terima kasih! Kehadiran Anda telah dicatat.");
-          form.reset();
-        } else {
-          alert("Gagal mengirim data. Silakan coba lagi.");
-        }
-      }).catch(() => {
-        alert("Terjadi kesalahan jaringan.");
-      });
+    .then(res => {
+      alert(res.status === "sukses" ? "Terima kasih! Kehadiran Anda telah dicatat." : "Gagal mengirim data.");
+      if (res.status === "sukses") form.reset();
+    }).catch(() => alert("Terjadi kesalahan jaringan."));
   });
-  </script>
 
+  const swiper = new Swiper(".mySwiper", {
+    loop: true,
+    autoplay: { delay: 4000, disableOnInteraction: false },
+    effect: "fade",
+    pagination: { el: ".swiper-pagination", clickable: true },
+    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+  });
+
+  let lastScrollTop = 0;
+  const musicToggle = document.getElementById("musicToggle");
+  window.addEventListener("scroll", function () {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    if (currentScroll > lastScrollTop) {
+      musicToggle.classList.add("hidden");
+    } else {
+      musicToggle.classList.remove("hidden");
+    }
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+  });
+</script>
 </body>
 </html>
